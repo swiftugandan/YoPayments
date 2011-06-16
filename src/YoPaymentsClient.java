@@ -1,4 +1,5 @@
 
+import org.apache.commons.codec.binary.Base64OutputStream;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -10,6 +11,9 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -21,7 +25,11 @@ import java.io.Writer;
  * This example demonstrates how to create secure connections with a custom SSL
  * context.
  */
-public class ClientCustomSSL {
+public class YoPaymentsClient {
+    
+    public void YoPaymentsClient(){
+        
+    }
 
     private static String convertStreamToString(InputStream is) {
         /*
@@ -50,15 +58,33 @@ public class ClientCustomSSL {
         return sb.toString();
     }
     
+    private static String encodeBase64WithApache() throws IOException {
+
+        int BUFFER_SIZE = 4096;
+        byte[] buffer = new byte[BUFFER_SIZE];
+        InputStream input = new FileInputStream("Readme.txt");
+        OutputStream output = new Base64OutputStream(new FileOutputStream("Readme64.txt"));
+        int n = input.read(buffer, 0, BUFFER_SIZE);
+        while (n >= 0) {
+            output.write(buffer, 0, n);
+            n = input.read(buffer, 0, BUFFER_SIZE);
+        }
+        input.close();
+        output.close();
+        return null;
+    }
+    
     //Withdrawfunds XML Builder method No Narrative file, No Internal Reference
     
     /**
-     * @param String APIUsername, String APIPassword, float Amount, String
-     *            BeneficiaryPhone, String Narrative
+     * This method creates the xml format that is accepted by the Yo Payments server.
+     * 
+     *  @return String          
      */
     
-    private static String createWithdrawFundsXML(String APIUsername, String APIPassword, float Amount,
-            String BeneficiaryPhone, String Narrative) {
+    public static String createWithdrawalXml(String APIUsername, String APIPassword,
+            float Amount, String AccountPhoneNo,String Narrative) {
+        String base64String = "VGhpcyBpcyBhIHRlc3QgZmlsZQ==";
         return "<?xml version='1.0' encoding='UTF-8'?>" + 
         "<AutoCreate>" + 
             "<Request>" + 
@@ -66,18 +92,40 @@ public class ClientCustomSSL {
                 "<APIPassword>"+APIPassword+"</APIPassword>"+ 
                 "<Method>acwithdrawfunds</Method>"+
                 "<Amount>"+String.valueOf(Amount)+"</Amount>"+ 
-                "<Account>"+BeneficiaryPhone+"</Account>"+ 
-                //"<AccountProviderCode></AccountProviderCode>"+ 
-                "<Narrative>"+Narrative+"</Narrative>"+ 
-                //"<NarrativeFileName></NarrativeFileName>"+
-                //"<NarrativeFileBase64></NarrativeFileBase64>"+ 
-                //"<InternalReference></InternalReference>"+ 
-                //"<ExternalReference>1</ExternalReference>"+
+                "<Account>"+AccountPhoneNo+"</Account>"+ 
+                "<Narrative>"+Narrative+"</Narrative>"+
+                "<NarrativeFileName>invoice.txt</NarrativeFileName>"+
+                "<NarrativeFileBase64>"+base64String+"</NarrativeFileBase64>"+
              "</Request>"+ 
         "</AutoCreate>";
     }
     
-    private static String executePostRequest (String inputXML, String serviceUrl)throws Exception{
+    //Withdrawfunds XML Builder method No Narrative file, No Internal Reference
+    
+    public static String createWithdrawalXml(String APIUsername, String APIPassword,
+            float Amount, String AccountPhoneNo, String AccountProviderCode,
+            String Narrative, String NarrativeFileName, String NarrativeFileBase64,
+            String InternalReference, String ExternalReference) {
+        String base64String = "TWFuIGlzIGRpc3Rpbmd1aXNoZWQsIG5vdCBvbmx5IGJ5IGhpcyByZWFzb24sIGJ1dCBieSB0aGlzIHNpbmd1bGFyIHBhc3Npb24gZnJvbSBvdGhlciBhbmltYWxzLCB3aGljaCBpcyBhIGx1c3Qgb2YgdGhlIG1pbmQsIHRoYXQgYnkgYSBwZXJzZXZlcmFuY2Ugb2YgZGVsaWdodCBpbiB0aGUgY29udGludWVkIGFuZCBpbmRlZmF0aWdhYmxlIGdlbmVyYXRpb24gb2Yga25vd2xlZGdlLCBleGNlZWRzIHRoZSBzaG9ydCB2ZWhlbWVuY2Ugb2YgYW55IGNhcm5hbCBwbGVhc3VyZS4=";
+        return "<?xml version='1.0' encoding='UTF-8'?>" + 
+        "<AutoCreate>" + 
+            "<Request>" + 
+                "<APIUsername>"+APIUsername+"</APIUsername>" + 
+                "<APIPassword>"+APIPassword+"</APIPassword>"+ 
+                "<Method>acwithdrawfunds</Method>"+
+                "<Amount>"+String.valueOf(Amount)+"</Amount>"+ 
+                "<Account>"+AccountPhoneNo+"</Account>"+ 
+                "<AccountProviderCode></AccountProviderCode>"+ 
+                "<Narrative>"+Narrative+"</Narrative>"+ 
+                "<NarrativeFileName>invoice.txt</NarrativeFileName>"+
+                "<NarrativeFileBase64>"+base64String+"</NarrativeFileBase64>"+ 
+                "<InternalReference></InternalReference>"+ 
+                "<ExternalReference>2</ExternalReference>"+
+             "</Request>"+ 
+        "</AutoCreate>";
+    }
+    
+    public static String executeYoPaymentsRequest (String inputXML, String serviceUrl)throws Exception{
         DefaultHttpClient httpclient = new DefaultHttpClient();
         
         String result = null;
@@ -133,11 +181,15 @@ public class ClientCustomSSL {
 
     public final static void main(String[] args) throws Exception {
         
-        String inputXML = createWithdrawFundsXML("90004135493","1203036617", 1000,"25677123456","Narrative 3" );
-       
-        String serviceUrl = "https://41.220.12.206/services/yopaymentsdev/task.php";
+        //String inputXML = createWithdrawalXml("90004135493","1203036617", 1000,"25677123456","Narrative 3" );
         
-        System.out.println(executePostRequest (inputXML, serviceUrl));
+        //String base64String = "TWFuIGlzIGRpc3Rpbmd1aXNoZWQsIG5vdCBvbmx5IGJ5IGhpcyByZWFzb24sIGJ1dCBieSB0aGlzIHNpbmd1bGFyIHBhc3Npb24gZnJvbSBvdGhlciBhbmltYWxzLCB3aGljaCBpcyBhIGx1c3Qgb2YgdGhlIG1pbmQsIHRoYXQgYnkgYSBwZXJzZXZlcmFuY2Ugb2YgZGVsaWdodCBpbiB0aGUgY29udGludWVkIGFuZCBpbmRlZmF0aWdhYmxlIGdlbmVyYXRpb24gb2Yga25vd2xlZGdlLCBleGNlZWRzIHRoZSBzaG9ydCB2ZWhlbWVuY2Ugb2YgYW55IGNhcm5hbCBwbGVhc3VyZS4=";
+               
+        //String serviceUrl = "https://41.220.12.206/services/yopaymentsdev/task.php";
+        
+        //System.out.println(executeYoPaymentsRequest (inputXML, serviceUrl));
+        
+        encodeBase64WithApache();
 
     }
 
