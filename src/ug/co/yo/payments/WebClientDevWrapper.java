@@ -1,3 +1,4 @@
+package ug.co.yo.payments;
 import org.apache.http.client.HttpClient;
 import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.conn.scheme.Scheme;
