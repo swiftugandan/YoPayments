@@ -470,6 +470,17 @@ public class YoPaymentsAPIClient {
         "</AutoCreate>";
     }
     
+    public String createBalanceCheckXml(){
+        return "<?xml version='1.0' encoding='UTF-8'?>" + 
+        "<AutoCreate>" + 
+        "<Request>" + 
+            "<APIUsername>"+APIUsername+"</APIUsername>" + 
+            "<APIPassword>"+APIPassword+"</APIPassword>"+ 
+            "<Method>acacctbalance</Method>"+
+         "</Request>"+ 
+    "</AutoCreate>";
+    }
+    
     private static String checkInternalReference(String InternalReference) {
         if (!InternalReference.isEmpty()) {
             return "<InternalReference>" + InternalReference + "</InternalReference>";
