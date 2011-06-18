@@ -198,7 +198,7 @@ public class YoPaymentsClient {
                 "<Narrative>"+Narrative+"</Narrative>"+ 
                 "<NarrativeFileName>"+NarrativeFileName+"</NarrativeFileName>"+
                 "<NarrativeFileBase64>"+base64String+"</NarrativeFileBase64>"+ 
-                "<InternalReference>"+InternalReference+"</InternalReference>"+ 
+                checkInternalReference(InternalReference)+ 
                 "<ExternalReference>"+ExternalReference+"</ExternalReference>"+
              "</Request>"+ 
         "</AutoCreate>";
@@ -318,7 +318,7 @@ public class YoPaymentsClient {
                 "<Narrative>"+Narrative+"</Narrative>"+ 
                 "<NarrativeFileName>"+NarrativeFileName+"</NarrativeFileName>"+
                 "<NarrativeFileBase64>"+base64String+"</NarrativeFileBase64>"+ 
-                "<InternalReference>"+InternalReference+"</InternalReference>"+ 
+                checkInternalReference(InternalReference)+ 
                 "<ExternalReference>"+ExternalReference+"</ExternalReference>"+
              "</Request>"+ 
         "</AutoCreate>";
@@ -464,10 +464,18 @@ public class YoPaymentsClient {
                 "<Narrative>"+Narrative+"</Narrative>"+ 
                 "<NarrativeFileName>"+NarrativeFileName+"</NarrativeFileName>"+
                 "<NarrativeFileBase64>"+base64String+"</NarrativeFileBase64>"+ 
-                "<InternalReference>"+InternalReference+"</InternalReference>"+ 
+                checkInternalReference(InternalReference)+ 
                 "<ExternalReference>"+ExternalReference+"</ExternalReference>"+
              "</Request>"+ 
         "</AutoCreate>";
+    }
+    
+    private static String checkInternalReference(String InternalReference) {
+        if (!InternalReference.isEmpty()) {
+            return "<InternalReference>" + InternalReference + "</InternalReference>";
+        } else{
+            return "";
+        }
     }
     
     public String executeYoPaymentsRequest (String inputXML, String serviceUrl)throws Exception{
