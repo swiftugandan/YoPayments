@@ -21,7 +21,7 @@ import java.io.OutputStream;
  * @author Munaawa Philip (swiftugandan@gmail.com)
  * This class implements the Yo Payments API (www.yo.co.ug/payments)
  */
-public class YoPaymentsClient {
+public class YoPaymentsAPIClient {
     
     private String APIUsername;
     private String APIPassword;
@@ -39,7 +39,7 @@ public class YoPaymentsClient {
      *            that if you do not have a Business Account, you cannot use the
      *            API.
      */
-    public YoPaymentsClient(String APIUsername, String APIPassword){
+    public YoPaymentsAPIClient(String APIUsername, String APIPassword){
                 this.APIUsername = APIUsername;
                 this.APIPassword = APIPassword;
     }
@@ -478,6 +478,8 @@ public class YoPaymentsClient {
         }
     }
     
+    
+    //This is the workhorse, probably place it in a separate thread
     public String executeYoPaymentsRequest (String inputXML, String serviceUrl)throws Exception{
         DefaultHttpClient httpclient = new DefaultHttpClient();
         
@@ -502,7 +504,7 @@ public class YoPaymentsClient {
 
             HttpResponse response = httpclient.execute(httppost);
             HttpEntity responseEntity = response.getEntity();
-            if (response.getStatusLine().getStatusCode() == 200) {
+            if (response.getStatusLine().getStatusCode() == 200) { 
                 if (responseEntity != null) {
                     InputStream instream = responseEntity.getContent();
                     result = convertStreamToString(instream);
@@ -531,21 +533,4 @@ public class YoPaymentsClient {
 
         return result; 
     }
-
-    public final static void main(String[] args) throws Exception {
-        
-        YoPaymentsClient yoPaymentsClient= new YoPaymentsClient("90004135493","1203036617");
-        
-        //String inputXML = yoPaymentsClient.createWithdrawalXml(1000,"25677123456","Narrative 6" );
-        String inputXML = yoPaymentsClient.createWithdrawalXml(1000, "25677123456", "", "This is a Narrative", "Readme.txt", "", "1");
-        //String inputXML = yoPaymentsClient.createDepositXml(1000000, "25677123456", "Narrative 6");
-                     
-        String serviceUrl = "https://41.220.12.206/services/yopaymentsdev/task.php";
-        
-        System.out.println(yoPaymentsClient.executeYoPaymentsRequest (inputXML, serviceUrl));
-        
-        //encodeBase64WithApache(); 
-
-    }
-
 }
