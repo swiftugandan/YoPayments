@@ -536,7 +536,7 @@ public class YoPaymentsClient {
         
         System.out.println(yoPaymentsClient.executeYoPaymentsRequest (inputXML, serviceUrl));
         
-        //encodeBase64WithApache();
+        //encodeBase64WithApache(); 
 
     }
 
