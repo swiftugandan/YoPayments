@@ -7,7 +7,6 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -410,10 +409,6 @@ public class YoPaymentsAPIClient {
      *            characters here. If you wish to provide more information,
      *            consider using the Extended parameter method with
      *            NarrativeFileBase6. - <b>Mandatory</b>
-     * @param AccountProviderCode - Provide here the account provider code of
-     *            the institution holding the account indicated in the Account
-     *            parameter. See section 8 for a list of all supported account
-     *            provider code - <b>Optional</b>
      * @param NarrativeFileName - This parameter enables you to attach a file to
      *            the transaction. This is useful, for example, in the case
      *            where you may want to attach a scanned receipt, or a scanned
@@ -491,7 +486,8 @@ public class YoPaymentsAPIClient {
     
     
     //This is the workhorse, probably place it in a separate thread
-    public String executeYoPaymentsRequest (String inputXML, String serviceUrl)throws Exception{
+    public YoPaymentsResponse executeYoPaymentsRequest(String inputXML, String serviceUrl)
+            throws Exception {
         DefaultHttpClient httpclient = new DefaultHttpClient();
         
         String result = null;
@@ -499,7 +495,7 @@ public class YoPaymentsAPIClient {
         // Work around self signed certificate issues
         // http://javaskeleton.blogspot.com/2010/07/avoiding-peer-not-authenticated-with.html
 
-        httpclient = (DefaultHttpClient)WebClientDevWrapper.wrapClient(httpclient);
+        //httpclient = (DefaultHttpClient)WebClientDevWrapper.wrapClient(httpclient);
         
         System.out.println(inputXML);
         
@@ -524,9 +520,9 @@ public class YoPaymentsAPIClient {
                     System.out.println(response.getStatusLine());
                     if (responseEntity != null) {
                         System.out.println("Response content length: " + responseEntity.getContentLength());
-                        System.out.println("Response content: " + result);
+                        //System.out.println("Response content: " + result);
                     }
-                    EntityUtils.consume(responseEntity);
+                    //EntityUtils.consume(responseEntity);
                 }
             }
         } catch (ClientProtocolException e) {
@@ -542,6 +538,6 @@ public class YoPaymentsAPIClient {
             httpclient.getConnectionManager().shutdown();
         }
 
-        return result; 
+        return new YoPaymentsResponse(result); 
     }
 }
