@@ -12,6 +12,10 @@ import java.io.StringReader;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+/**
+ * @author Munaawa Philip (swiftugandan@gmail.com)
+ * This class implements the Yo Payments API (www.yo.co.ug/payments)
+ */
 public class YoPaymentsResponse {
     private String status;
     private int statusCode;
@@ -90,6 +94,7 @@ public class YoPaymentsResponse {
     public String getTransactionReference() {
         return transactionReference;
     }
+    
 
     /*<?xml version="1.0" encoding="UTF-8"?> 
     <AutoCreate> 
@@ -155,14 +160,16 @@ public class YoPaymentsResponse {
                 System.out.println("TransactionReference: " + getCharacterDataFromElement(line));
                 this.transactionReference = getCharacterDataFromElement(line);
             }
-
+            
+            // There can be several balances for different currencies ...
+            // consider using an arrayList or Map for each Code/Balance pair
             NodeList currency = doc.getElementsByTagName("Currency");
             if (currency.getLength()>0) {
                 for (int i = 0; i < currency.getLength(); i++) {
                     Element element = (Element)currency.item(i);
                     NodeList code = element.getElementsByTagName("Code");
                     line = (Element)code.item(0);
-                    System.out.println("Name: " + getCharacterDataFromElement(line));
+                    System.out.println("Code: " + getCharacterDataFromElement(line));
 
                     NodeList balance = element.getElementsByTagName("Balance");
                     line = (Element)balance.item(0);

@@ -3,7 +3,8 @@ package ug.co.yo.payments;
 
 
 /**
- * @author munaawa
+ * @author Munaawa Philip (swiftugandan@gmail.com)
+ * This class is a sample application of the Yo! Payments API (www.yo.co.ug/payments)
  */
 public class YoPaymentsSample {
 
