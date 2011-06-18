@@ -18,6 +18,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 
 /**
+ * @author Munaawa Philip (swiftugandan@gmail.com)
  * This class implements the Yo Payments API (www.yo.co.ug/payments)
  */
 public class YoPaymentsClient {
