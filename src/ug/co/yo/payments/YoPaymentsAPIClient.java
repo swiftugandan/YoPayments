@@ -10,6 +10,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -75,7 +76,8 @@ public class YoPaymentsAPIClient {
         byte[] buffer = new byte[BUFFER_SIZE];
         InputStream input = new FileInputStream(inputFile);
         ByteArrayOutputStream byte1 = new ByteArrayOutputStream();
-        OutputStream output = new Base64OutputStream(byte1); // System.out
+        //OutputStream output = new Base64OutputStream(byte1,Base64.DEFAULT); // Android
+        OutputStream output = new Base64OutputStream(byte1);
         int n = input.read(buffer, 0, BUFFER_SIZE);
         while (n >= 0) {
             output.write(buffer, 0, n);
@@ -178,13 +180,8 @@ public class YoPaymentsAPIClient {
      */
     public String createWithdrawalXml(float Amount, String BeneficiaryPhone,
             String AccountProviderCode, String Narrative, String NarrativeFileName,
-            String InternalReference, String ExternalReference) throws IOException {
-        String base64String = null;
-        if (!NarrativeFileName.isEmpty()) {
-            base64String = base64Encode(NarrativeFileName);
-        } else {
-            base64String="";
-        }
+            String InternalReference, String ExternalReference){
+
         return "<?xml version='1.0' encoding='UTF-8'?>" + 
         "<AutoCreate>" + 
             "<Request>" + 
@@ -195,8 +192,7 @@ public class YoPaymentsAPIClient {
                 "<Account>"+BeneficiaryPhone+"</Account>"+ 
                 "<AccountProviderCode></AccountProviderCode>"+ 
                 "<Narrative>"+Narrative+"</Narrative>"+ 
-                "<NarrativeFileName>"+NarrativeFileName+"</NarrativeFileName>"+
-                "<NarrativeFileBase64>"+base64String+"</NarrativeFileBase64>"+ 
+                checkNarrativeFileName(NarrativeFileName)+
                 checkInternalReference(InternalReference)+ 
                 "<ExternalReference>"+ExternalReference+"</ExternalReference>"+
              "</Request>"+ 
@@ -298,13 +294,8 @@ public class YoPaymentsAPIClient {
      */
     public String createDepositXml(float Amount, String FundsSourcePhone,
             String AccountProviderCode, String Narrative, String NarrativeFileName,
-            String InternalReference, String ExternalReference) throws IOException {
-        String base64String = null;
-        if (!NarrativeFileName.isEmpty()) {
-            base64String = base64Encode(NarrativeFileName);
-        } else {
-            base64String="";
-        }
+            String InternalReference, String ExternalReference) {
+
         return "<?xml version='1.0' encoding='UTF-8'?>" + 
         "<AutoCreate>" + 
             "<Request>" + 
@@ -315,8 +306,7 @@ public class YoPaymentsAPIClient {
                 "<Account>"+FundsSourcePhone+"</Account>"+ 
                 "<AccountProviderCode></AccountProviderCode>"+ 
                 "<Narrative>"+Narrative+"</Narrative>"+ 
-                "<NarrativeFileName>"+NarrativeFileName+"</NarrativeFileName>"+
-                "<NarrativeFileBase64>"+base64String+"</NarrativeFileBase64>"+ 
+                checkNarrativeFileName(NarrativeFileName)+
                 checkInternalReference(InternalReference)+ 
                 "<ExternalReference>"+ExternalReference+"</ExternalReference>"+
              "</Request>"+ 
@@ -438,13 +428,7 @@ public class YoPaymentsAPIClient {
     public String createInternalTransferXml(String CurrencyCode, float Amount,
             String BeneficiaryAccount, String BeneficiaryEmail, String Narrative,
             String NarrativeFileName, String InternalReference, String ExternalReference)
-            throws IOException {
-        String base64String = null;
-        if (!NarrativeFileName.isEmpty()) {
-            base64String = base64Encode(NarrativeFileName);
-        } else {
-            base64String="";
-        }
+            {
         
         return "<?xml version='1.0' encoding='UTF-8'?>" + 
         "<AutoCreate>" + 
@@ -457,8 +441,7 @@ public class YoPaymentsAPIClient {
                 "<BeneficiaryAccount>"+BeneficiaryAccount+"</BeneficiaryAccount>"+ 
                 "<BeneficiaryEmail>"+BeneficiaryEmail+"</BeneficiaryEmail>"+  
                 "<Narrative>"+Narrative+"</Narrative>"+ 
-                "<NarrativeFileName>"+NarrativeFileName+"</NarrativeFileName>"+
-                "<NarrativeFileBase64>"+base64String+"</NarrativeFileBase64>"+ 
+                checkNarrativeFileName(NarrativeFileName)+
                 checkInternalReference(InternalReference)+ 
                 "<ExternalReference>"+ExternalReference+"</ExternalReference>"+
              "</Request>"+ 
@@ -477,11 +460,35 @@ public class YoPaymentsAPIClient {
     }
     
     private static String checkInternalReference(String InternalReference) {
-        if (!InternalReference.isEmpty()) {
-            return "<InternalReference>" + InternalReference + "</InternalReference>";
-        } else{
-            return "";
+        String result = "";
+        if (InternalReference != null) {
+            if (InternalReference != "") {
+                result = "<InternalReference>" + InternalReference + "</InternalReference>";
+            }
         }
+        return result;
+    }
+    
+    private static String checkNarrativeFileName(String NarrativeFileName) {
+        String result = "";
+        if (NarrativeFileName != null) {
+            if (NarrativeFileName != "") {
+                /*String FileName = "";
+                if (NarrativeFileName.contains("/")) {
+                    FileName = NarrativeFileName.split("/")[NarrativeFileName.split("/").length - 1];
+                }*/
+                String fileName = new File(NarrativeFileName).getName();
+                try {
+                    result = "<NarrativeFileName>" + fileName + "</NarrativeFileName>"
+                            + "<NarrativeFileBase64>" + base64Encode(NarrativeFileName)
+                            + "</NarrativeFileBase64>";
+                } catch (IOException e) {
+                    // result = "";
+                    e.printStackTrace();
+                }
+            }
+        }
+        return result;
     }
     
     

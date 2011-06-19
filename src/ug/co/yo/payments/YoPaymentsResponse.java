@@ -132,7 +132,6 @@ public class YoPaymentsResponse {
     
     private void parseXmlResponse(String xmlResponse) {
         Element line;
-        // parse the xmlResponse and populate the member variables
         try {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
@@ -144,7 +143,6 @@ public class YoPaymentsResponse {
             NodeList status = doc.getElementsByTagName("Status");
             if (status.getLength()>0) {
                 line = (Element)status.item(0);
-                //System.out.println("Status: " + getCharacterDataFromElement(line));
                 this.status = getCharacterDataFromElement(line);
                 sb.append("Status: ");
                 sb.append(this.status);
@@ -154,7 +152,6 @@ public class YoPaymentsResponse {
             NodeList statusCode = doc.getElementsByTagName("StatusCode");
             if (statusCode.getLength()>0) {
                 line = (Element)statusCode.item(0);
-                //System.out.println("StatusCode: " + getCharacterDataFromElement(line));
                 this.statusCode = Integer.parseInt(getCharacterDataFromElement(line));
                 sb.append("StatusCode: ");
                 sb.append(this.statusCode);
@@ -164,7 +161,6 @@ public class YoPaymentsResponse {
             NodeList statusMessage = doc.getElementsByTagName("StatusMessage");
             if (statusMessage.getLength()>0) {
                 line = (Element)statusMessage.item(0);
-                //System.out.println("StatusMessage: " + getCharacterDataFromElement(line));
                 this.statusMessage = getCharacterDataFromElement(line);
                 sb.append("StatusMessage: ");
                 sb.append(this.statusMessage);
@@ -174,7 +170,6 @@ public class YoPaymentsResponse {
             NodeList errorMessage = doc.getElementsByTagName("ErrorMessage");
             if (errorMessage.getLength()>0) {
                 line = (Element)errorMessage.item(0);
-                //System.out.println("ErrorMessage: " + getCharacterDataFromElement(line));
                 this.errorMessage = getCharacterDataFromElement(line);
                 sb.append("ErrorMessage: ");
                 sb.append(this.errorMessage);
@@ -184,7 +179,6 @@ public class YoPaymentsResponse {
             NodeList transactionStatus = doc.getElementsByTagName("TransactionStatus");
             if (transactionStatus.getLength()>0) {
                 line = (Element)transactionStatus.item(0);
-                //System.out.println("TransactionStatus: " + getCharacterDataFromElement(line));
                 this.transactionStatus = getCharacterDataFromElement(line);
                 sb.append("TransactionStatus: ");
                 sb.append(this.transactionStatus);
@@ -194,7 +188,6 @@ public class YoPaymentsResponse {
             NodeList transactionReference = doc.getElementsByTagName("TransactionReference");
             if (transactionReference.getLength()>0) {
                 line = (Element)transactionReference.item(0);
-                //System.out.println("TransactionReference: " + getCharacterDataFromElement(line));
                 this.transactionReference = getCharacterDataFromElement(line);
                 sb.append("TransactionReference: ");
                 sb.append(this.transactionReference);
@@ -226,8 +219,6 @@ public class YoPaymentsResponse {
                     while (k.hasNext()) {
                         @SuppressWarnings("rawtypes")
                         Map.Entry me = (Map.Entry)k.next();
-                        //System.out.print(me.getKey() + ": ");
-                        //System.out.println(me.getValue());
                         sb.append(me.getKey() + ": ");
                         sb.append(me.getValue());
                         sb.append('\n');
@@ -249,7 +240,6 @@ public class YoPaymentsResponse {
     }
 
     public String toString() {
-        //System.out.println(sb.toString());
         return sb.toString();
     }
 }
