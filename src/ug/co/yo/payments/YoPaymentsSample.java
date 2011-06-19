@@ -17,8 +17,8 @@ public class YoPaymentsSample {
 
         // String inputXML =yoPaymentsClient.createWithdrawalXml(1000,"25677123456","Narrative 6");
         // String inputXML = yoPaymentsClient.createWithdrawalXml(1000,"25677123456", "", "This is a Narrative", "Readme.txt", "", "2");
-         String inputXML = yoPaymentsClient.createDepositXml(1000000,"25677123456", "Narrative 7");
-        // String inputXML = yoPaymentsClient.createBalanceCheckXml();
+        // String inputXML = yoPaymentsClient.createDepositXml(1000000,"25677123456", "Narrative 7");
+         String inputXML = yoPaymentsClient.createBalanceCheckXml();
 
         String serviceUrl = "http://41.220.12.206/services/yopaymentsdev/task.php";
 

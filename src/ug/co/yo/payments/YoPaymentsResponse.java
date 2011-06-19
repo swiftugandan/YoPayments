@@ -8,6 +8,10 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 import java.io.StringReader;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -23,6 +27,7 @@ public class YoPaymentsResponse {
     private String errorMessage;
     private String transactionStatus;
     private String transactionReference = null;
+    private HashMap<String, Double> balance = new HashMap<String, Double>(); 
       
     YoPaymentsResponse(String xmlResponse) {
         parseXmlResponse(xmlResponse);
@@ -95,6 +100,21 @@ public class YoPaymentsResponse {
         return transactionReference;
     }
     
+    /**
+     * The Balance section, if present in the response, contains of one or more
+     * Currency sub-sections. Each Currency sub-section contains balance
+     * information for that specific currency. Note that the Balance section is
+     * not always present in the response to the acacctbalance request. Rather,
+     * it is only present if there has been at least one transaction carried out
+     * on your account. You should interpret the absence of the Balance section
+     * as an indication that no transaction has yet been carried out on your
+     * account. The information in the rows below pertains to the contents of
+     * each of the Currency sub-section. This information is only relevant if
+     * the Balance section is present in the response that you got.
+     */
+    public HashMap<String, Double> getBalance() {
+        return balance;  
+    }
 
     /*<?xml version="1.0" encoding="UTF-8"?> 
     <AutoCreate> 
@@ -162,18 +182,33 @@ public class YoPaymentsResponse {
             }
             
             // There can be several balances for different currencies ...
-            // consider using an arrayList or Map for each Code/Balance pair
+            // consider using a Map for each Code/Balance pair
             NodeList currency = doc.getElementsByTagName("Currency");
-            if (currency.getLength()>0) {
+            if (currency.getLength() > 0) {
+                Element balanceLine, codeLine = null;
                 for (int i = 0; i < currency.getLength(); i++) {
                     Element element = (Element)currency.item(i);
                     NodeList code = element.getElementsByTagName("Code");
-                    line = (Element)code.item(0);
-                    System.out.println("Code: " + getCharacterDataFromElement(line));
+                    if (code.getLength() > 0) {
+                        codeLine = (Element)code.item(0);
+                    }
 
                     NodeList balance = element.getElementsByTagName("Balance");
-                    line = (Element)balance.item(0);
-                    System.out.println("Balance: " + getCharacterDataFromElement(line));
+                    if (balance.getLength() > 0) {
+                        balanceLine = (Element)balance.item(0);
+                        this.balance.put(getCharacterDataFromElement(codeLine),
+                                Double.parseDouble(getCharacterDataFromElement(balanceLine)));
+                    }
+                    Set<?> set = this.balance.entrySet();
+                    // Get an iterator
+                    Iterator<?> k = set.iterator();
+                    // Display elements
+                    while (k.hasNext()) {
+                        @SuppressWarnings("rawtypes")
+                        Map.Entry me = (Map.Entry)k.next();
+                        System.out.print(me.getKey() + ": ");
+                        System.out.println(me.getValue());
+                    } 
                 }
             }
         } catch (Exception e) {
