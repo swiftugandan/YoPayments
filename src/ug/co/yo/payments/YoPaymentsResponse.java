@@ -19,8 +19,10 @@ import javax.xml.parsers.DocumentBuilderFactory;
 /**
  * @author Munaawa Philip (swiftugandan@gmail.com)
  * This class implements the Yo Payments API (www.yo.co.ug/payments)
+ * 
  */
 public class YoPaymentsResponse {
+    private StringBuilder sb = new StringBuilder();
     private String status;
     private int statusCode;
     private String statusMessage;
@@ -142,43 +144,61 @@ public class YoPaymentsResponse {
             NodeList status = doc.getElementsByTagName("Status");
             if (status.getLength()>0) {
                 line = (Element)status.item(0);
-                System.out.println("Status: " + getCharacterDataFromElement(line));
+                //System.out.println("Status: " + getCharacterDataFromElement(line));
                 this.status = getCharacterDataFromElement(line);
+                sb.append("Status: ");
+                sb.append(this.status);
+                sb.append('\n');
             }
 
             NodeList statusCode = doc.getElementsByTagName("StatusCode");
             if (statusCode.getLength()>0) {
                 line = (Element)statusCode.item(0);
-                System.out.println("StatusCode: " + getCharacterDataFromElement(line));
+                //System.out.println("StatusCode: " + getCharacterDataFromElement(line));
                 this.statusCode = Integer.parseInt(getCharacterDataFromElement(line));
+                sb.append("StatusCode: ");
+                sb.append(this.statusCode);
+                sb.append('\n');
             }
 
             NodeList statusMessage = doc.getElementsByTagName("StatusMessage");
             if (statusMessage.getLength()>0) {
                 line = (Element)statusMessage.item(0);
-                System.out.println("StatusMessage: " + getCharacterDataFromElement(line));
+                //System.out.println("StatusMessage: " + getCharacterDataFromElement(line));
                 this.statusMessage = getCharacterDataFromElement(line);
+                sb.append("StatusMessage: ");
+                sb.append(this.statusMessage);
+                sb.append('\n');
             }
 
             NodeList errorMessage = doc.getElementsByTagName("ErrorMessage");
             if (errorMessage.getLength()>0) {
                 line = (Element)errorMessage.item(0);
-                System.out.println("ErrorMessage: " + getCharacterDataFromElement(line));
+                //System.out.println("ErrorMessage: " + getCharacterDataFromElement(line));
                 this.errorMessage = getCharacterDataFromElement(line);
+                sb.append("ErrorMessage: ");
+                sb.append(this.errorMessage);
+                sb.append('\n');
             }
 
             NodeList transactionStatus = doc.getElementsByTagName("TransactionStatus");
             if (transactionStatus.getLength()>0) {
                 line = (Element)transactionStatus.item(0);
-                System.out.println("TransactionStatus: " + getCharacterDataFromElement(line));
+                //System.out.println("TransactionStatus: " + getCharacterDataFromElement(line));
                 this.transactionStatus = getCharacterDataFromElement(line);
+                sb.append("TransactionStatus: ");
+                sb.append(this.transactionStatus);
+                sb.append('\n');
             }
 
             NodeList transactionReference = doc.getElementsByTagName("TransactionReference");
             if (transactionReference.getLength()>0) {
                 line = (Element)transactionReference.item(0);
-                System.out.println("TransactionReference: " + getCharacterDataFromElement(line));
+                //System.out.println("TransactionReference: " + getCharacterDataFromElement(line));
                 this.transactionReference = getCharacterDataFromElement(line);
+                sb.append("TransactionReference: ");
+                sb.append(this.transactionReference);
+                sb.append('\n');
             }
             
             // There can be several balances for different currencies ...
@@ -206,8 +226,11 @@ public class YoPaymentsResponse {
                     while (k.hasNext()) {
                         @SuppressWarnings("rawtypes")
                         Map.Entry me = (Map.Entry)k.next();
-                        System.out.print(me.getKey() + ": ");
-                        System.out.println(me.getValue());
+                        //System.out.print(me.getKey() + ": ");
+                        //System.out.println(me.getValue());
+                        sb.append(me.getKey() + ": ");
+                        sb.append(me.getValue());
+                        sb.append('\n');
                     } 
                 }
             }
@@ -225,7 +248,10 @@ public class YoPaymentsResponse {
         return null;
     }
 
-    // String toString()
+    public String toString() {
+        //System.out.println(sb.toString());
+        return sb.toString();
+    }
 }
     
 
