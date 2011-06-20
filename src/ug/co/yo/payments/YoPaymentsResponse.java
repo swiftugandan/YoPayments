@@ -18,7 +18,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 /**
  * @author Munaawa Philip (swiftugandan@gmail.com)
- * This class implements the Yo Payments API (www.yo.co.ug/payments)
+ * This class implements the Yo Payments API (https://payments.yo.co.ug)
  * 
  */
 public class YoPaymentsResponse {
