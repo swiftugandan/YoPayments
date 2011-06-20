@@ -11,7 +11,7 @@ highly successful mobile money transfer phenomenon.
 
 YO! PAYMENTS API 
 Yo! Payments offers an Application Programming Interface (API) for businesses who 
-wish to customize their customers’ payment experience. The API is only available for 
+wish to customize their customers' payment experience. The API is only available for 
 Business Account holders. 
 
 SUPPORTED TRANSACTIONS
