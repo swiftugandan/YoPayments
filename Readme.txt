@@ -1,3 +1,23 @@
+=======================================================================================
+   Copyright 2011 Munaawa Philip (swiftugandan@gmail.com)
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+=======================================================================================
+ 
+INTRODUCTION
+This library creates a java wrapper for Yo! Uganda's Mobile payments platform.
+It is based on the API documentation v1.4.1 https://payments.yo.co.ug/resources/API.pdf
+
 ABOUT YO! PAYMENTS
 Yo! Payments is a revolutionary mobile payments gateway service. Yo! Payments 
 enables businesses to receive payments from their customers via mobile money, as well 
@@ -23,7 +43,3 @@ Interface:
 - Internal Transfer 
 The above transactions are fully described in the later sections of the API document, as well 
 as the Web Interface
-
-This library creates a java wrapper for Yo! Uganda's Mobile payments platform.
-
-It is based on the API documentation v1.4.1 https://payments.yo.co.ug/resources/API.pdf
