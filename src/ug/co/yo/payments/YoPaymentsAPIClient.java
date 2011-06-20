@@ -461,22 +461,15 @@ public class YoPaymentsAPIClient {
     
     private static String checkInternalReference(String InternalReference) {
         String result = "";
-        if (InternalReference != null) {
-            if (InternalReference != "") {
+        if (InternalReference != null && InternalReference != "") {
                 result = "<InternalReference>" + InternalReference + "</InternalReference>";
-            }
         }
         return result;
     }
     
     private static String checkNarrativeFileName(String NarrativeFileName) {
         String result = "";
-        if (NarrativeFileName != null) {
-            if (NarrativeFileName != "") {
-                /*String FileName = "";
-                if (NarrativeFileName.contains("/")) {
-                    FileName = NarrativeFileName.split("/")[NarrativeFileName.split("/").length - 1];
-                }*/
+        if (NarrativeFileName != null && NarrativeFileName != "") {
                 String fileName = new File(NarrativeFileName).getName();
                 try {
                     result = "<NarrativeFileName>" + fileName + "</NarrativeFileName>"
@@ -486,7 +479,6 @@ public class YoPaymentsAPIClient {
                     // result = "";
                     e.printStackTrace();
                 }
-            }
         }
         return result;
     }
