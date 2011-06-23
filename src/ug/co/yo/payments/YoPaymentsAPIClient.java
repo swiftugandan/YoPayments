@@ -99,7 +99,7 @@ public class YoPaymentsAPIClient {
      *            greater than zero. Fractional amounts may not be supported by
      *            certain mobile money providers. - <b>Mandatory</b>
      * @param BeneficiaryPhone - This is a numerical value representing the
-     *            account number of the mobile money account wher you wish to
+     *            account number of the mobile money account where you wish to
      *            transfer the funds to. This is typically the telephone number
      *            of the mobile phone receiving the amount. Telephone numbers
      *            MUST have the international code prepended, without the “+”
@@ -109,7 +109,7 @@ public class YoPaymentsAPIClient {
      *            sentence describing the transaction. Provide a maximum of 4096
      *            characters here. If you wish to provide more information,
      *            consider using the Extended parameter method with
-     *            NarrativeFileBase6. - <b>Mandatory</b>
+     *            NarrativeFileBase64. - <b>Mandatory</b>
      * @return String
      */
     public String createWithdrawalXml(float Amount, String BeneficiaryPhone,String Narrative){
