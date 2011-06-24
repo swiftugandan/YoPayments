@@ -109,7 +109,7 @@ public class YoPaymentsAPIClient {
      *            sentence describing the transaction. Provide a maximum of 4096
      *            characters here. If you wish to provide more information,
      *            consider using the Extended parameter method with
-     *            NarrativeFileBase64. - <b>Mandatory</b>
+     *            NarrativeFileBase6. - <b>Mandatory</b>
      * @return String
      */
     public String createWithdrawalXml(float Amount, String BeneficiaryPhone,String Narrative){
@@ -194,7 +194,7 @@ public class YoPaymentsAPIClient {
                 "<Narrative>"+Narrative+"</Narrative>"+ 
                 checkNarrativeFileName(NarrativeFileName)+
                 checkInternalReference(InternalReference)+ 
-                "<ExternalReference>"+ExternalReference+"</ExternalReference>"+
+                checkExternalReference(ExternalReference)+
              "</Request>"+ 
         "</AutoCreate>";
     }
@@ -308,7 +308,7 @@ public class YoPaymentsAPIClient {
                 "<Narrative>"+Narrative+"</Narrative>"+ 
                 checkNarrativeFileName(NarrativeFileName)+
                 checkInternalReference(InternalReference)+ 
-                "<ExternalReference>"+ExternalReference+"</ExternalReference>"+
+                checkExternalReference(ExternalReference)+
              "</Request>"+ 
         "</AutoCreate>";
     }
@@ -443,7 +443,7 @@ public class YoPaymentsAPIClient {
                 "<Narrative>"+Narrative+"</Narrative>"+ 
                 checkNarrativeFileName(NarrativeFileName)+
                 checkInternalReference(InternalReference)+ 
-                "<ExternalReference>"+ExternalReference+"</ExternalReference>"+
+                checkExternalReference(ExternalReference)+
              "</Request>"+ 
         "</AutoCreate>";
     }
@@ -461,15 +461,23 @@ public class YoPaymentsAPIClient {
     
     private static String checkInternalReference(String InternalReference) {
         String result = "";
-        if (InternalReference != null && InternalReference != "") {
+        if (InternalReference != null && InternalReference.length() > 0) {
                 result = "<InternalReference>" + InternalReference + "</InternalReference>";
+        }
+        return result;
+    }
+    
+    private static String checkExternalReference(String ExternalReference) {
+        String result = "";
+        if (ExternalReference != null && ExternalReference.length() > 0) {
+                result = "<ExternalReference>" + ExternalReference + "</ExternalReference>";
         }
         return result;
     }
     
     private static String checkNarrativeFileName(String NarrativeFileName) {
         String result = "";
-        if (NarrativeFileName != null && NarrativeFileName != "") {
+        if (NarrativeFileName != null && NarrativeFileName.length() > 0) {
                 String fileName = new File(NarrativeFileName).getName();
                 try {
                     result = "<NarrativeFileName>" + fileName + "</NarrativeFileName>"
