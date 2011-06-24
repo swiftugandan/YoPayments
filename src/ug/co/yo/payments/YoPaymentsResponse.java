@@ -227,6 +227,7 @@ public class YoPaymentsResponse {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            System.out.println("Invalid  or null input XML ...");
         }
     }
 
